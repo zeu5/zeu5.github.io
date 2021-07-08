@@ -11,6 +11,27 @@ body {
     min-height: 100%;
 }
 
+@media screen and (min-width: 35.5em) {
+    #container {
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+}
+
+@media screen and (min-width: 48em) {
+    #container {
+        margin-left: 15%;
+        margin-right: 15%;
+    }
+}
+
+@media screen and (min-width: 64em) {
+    #container {
+        margin-left: 20%;
+        margin-right: 20%;
+    }
+}
+
 img {
     border-radius: 10%;
 }
@@ -43,6 +64,7 @@ img {
 #about {
     margin-top: 2rem;
     font-size: 1.4rem;
+    margin-bottom: 2rem;
 }
 #about p {
     line-height: 1.7rem;
