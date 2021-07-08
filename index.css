@@ -1,0 +1,54 @@
+body {
+    background-color: #000536;
+    color: #fff;
+}
+
+#container {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10%;
+    margin-bottom: auto;
+    min-height: 100%;
+}
+
+img {
+    border-radius: 10%;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    margin-right: 1em;
+    max-width: 80%;
+}
+
+.linkedin {
+    color: #fff;
+}
+.github {
+    color: #fff;
+}
+#social .pure-menu-item {
+    margin-right: 1rem;
+}
+
+#info {
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 2rem;   
+}
+
+#about {
+    margin-top: 2rem;
+    font-size: 1.4rem;
+}
+#about p {
+    line-height: 1.7rem;
+}
+
+a, a:focus, a:hover {
+    outline: none;
+    color: #fff;
+}
