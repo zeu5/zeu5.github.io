@@ -9,6 +9,7 @@ body {
     margin-top: 10%;
     margin-bottom: auto;
     min-height: 100%;
+    margin-bottom: 2em;
 }
 
 @media screen and (min-width: 35.5em) {
@@ -68,7 +69,7 @@ img {
 #about {
     margin-top: 2rem;
     font-size: 1.4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 #about p {
     line-height: 1.7rem;
@@ -81,4 +82,21 @@ a, a:focus, a:hover {
 
 #resume {
     font-size: 1.6rem;
+}
+
+.publication {
+    border-bottom: 1px solid #fff;
+}
+
+.publication:last-child {
+    border-bottom: none;
+}
+
+.heading > span {
+    /* padding-bottom: 0.3em; */
+    border-bottom: 2px solid #fff;
+}
+
+.heading {
+    margin-bottom: 1em;
 }
