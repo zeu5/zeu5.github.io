@@ -33,17 +33,28 @@ body {
 }
 
 img {
-    border-radius: 10%;
+    position: relative;
+    border: 2px solid black;
 }
 
 .image-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
+    display: block;
+    position: relative;
     margin-right: 1em;
     max-width: 80%;
 }
+
+/* .image-container::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -2.5%;
+    left: 10px;
+    border: 1px solid black;
+    height: 105%;
+    width: 100%;
+    background: #F7DBA7;
+} */
 
 .linkedin {
     color: #fff;
@@ -55,15 +66,57 @@ img {
     color: #fff;
 }
 
+.home-icon {
+    color: #fff;
+}
+
 #social .pure-menu-item {
     margin-right: 1rem;
 }
 
 #info {
     margin-bottom: 2rem;
-    border-bottom: 2px solid #fff;
-    padding-bottom: 2rem;   
+    padding-bottom: 2rem; 
 }
+/* 
+#name-container{
+    position: relative;  
+    width: fit-content;
+}
+
+#name {
+    position: relative;
+    z-index: 5;
+    padding: 0.3em;
+    color: black;
+}
+
+#name-container::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    background: #F7FFF7;
+    border: 2px solid black;
+    z-index: 2;
+}
+
+/* #81d5a2
+
+#name-container::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top:-10%;
+    left:6px;
+    height: 120%;
+    width: 100%;
+    background: #6CA6C1;
+    z-index: 1;
+} */
 
 #about {
     margin-top: 2rem;
@@ -81,4 +134,41 @@ a, a:focus, a:hover {
 
 #resume {
     font-size: 1.6rem;
+}
+
+#header > a {
+    display: inline-block;
+    /* margin-top: 1rem; */
+    margin-bottom: 2rem;
+    margin-right: 1rem;
+    text-decoration: none;
+}
+
+.menu-heading {
+    width: fit-content;
+}
+
+#header a.highlight > h1 {
+    border-bottom: 2px solid #fff;
+}
+
+.blog-link {
+    text-decoration: none;
+}
+
+.blog-link > p {
+    margin-top: 0.2rem;
+}
+
+.blog-link > h2 {
+    margin-bottom: 0.3rem;
+}
+
+.blog-post > p {
+    line-height: 1.5rem;
+    font-size: 1.2rem;
+}
+
+.blog-post > p:last-child {
+    margin-bottom: 20%;
 }

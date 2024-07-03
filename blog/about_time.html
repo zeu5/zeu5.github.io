@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Srinidhi's Blog</title>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+        <link rel="stylesheet" href="/index.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+    <body>
+        <div class="pure-g" id="container">
+            <div class="pure-u-1" id="header">
+                <a href="/"><h1 id="about-menu" class="menu-heading">About</h1></a>
+                <a href="/blog"><h1 id="blog-menu" class="menu-heading">Blog</h1></a>
+                <!-- <a href="/blog">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" width="25" class="home-icon">
+                        <path d="M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z" fill="currentColor"/>
+                    </svg>
+                </a> -->
+            </div>
+            <div class="pure-u-1 blog-post">
+                <h1>Getting distributed time right</h1>
+                <p>12th April 2024</p>
+                <p>---</p>
+                <p>As a note to the paper <a href="https://lamport.azurewebsites.net/pubs/time-clocks.pdf">Time, Clocks and Ordering of Events in a Distributed System</a>, Leslie Lamport says the following - "Special relativity teaches us that there is no invariant total ordering of events in space-time; different observers can disagree about which of two events happened first. There is only a partial order in which an event e1 precedes an event e2 iff e1 can causally affect e2.". When two nodes of a distributed system communicate with each other, they can disagree about each other's time since there is no global time. With realistic clocks that measure time very accurately, we can at best switch to a model where the time of the two processes have a bounded drift.</p>
+                <p>But why are we so concerned with time? An execution of a distributed system is not a single sequence of events that occur one after another but a partial order of events represented by a DAG. To capture an execution we record all the events and their causal ordering. Now you may ask why do we need to capture executions? So that we can replay them. Bugs in distributed systems require intricate ordering of events to appear and are therefore rare. To replay a bug, we need to capture the exact execution (partial order of events).</p>
+                <p>Let's take a popular distributed algorithm <a href="https://raft.github.io">Raft</a> as an example. A set of </p>
+            </div>
+        </div>
+    </body>
+</html>
