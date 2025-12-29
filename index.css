@@ -72,7 +72,7 @@ img {
 }
 
 #about {
-    margin-top: 2rem;
+    /* margin-top: 2rem; */
     font-size: 1.4rem;
     margin-bottom: 1rem;
 }
@@ -95,6 +95,13 @@ a, a:focus, a:hover {
 
 .publication:last-child {
     border-bottom: none;
+}
+
+#disclaimer {
+    font-size: 0.9rem;
+    margin-top: 2rem;
+    color: #ccc;
+    font-style: italic;
 }
 
 .heading > span {
