@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>About Moving Back | Srinidhi Nagendra</title>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+		<link rel="stylesheet" href="../index.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<div class="pure-g" id="container">
+			<div class="pure-u-1">
+				<nav class="top-nav" aria-label="Main navigation">
+					<a href="../index.html">Notes</a>
+					<a href="../about.html">About</a>
+				</nav>
+			</div>
+
+			<div class="pure-u-1 blog">
+				<article>
+					<h1>Chicken bits.</h1>
+					<p class="blog-date">2026-03-13</p>
+				</article>
+
+                <p>I recently learned about Chicken bits, specific bits in a CPU that are hardcoded to be 0/1 to disable/enable certain features. I document my learnings in this post. Skip the next section if you already know how chips are made.</p>
+
+				<h3>Chip design and production process</h3>
+
+                <p>A typical chip production process goes as follows (subject to my limited understanding): User applications and workflows influence instruction set architectures (ISA). E.g. <a href="https://www.intel.com/content/dam/doc/white-paper/advanced-encryption-standard-new-instructions-set-paper.pdf">AES instructions</a> that added support for different encryption modes because of the widespread use of AES in modern server applications. ISA is first implemented in microarchitecture, then made more concrete in RTL specifications that define individual logic gates and their interactions.</p>
+
+				<p>Hardware companies output verified and strongly tested RTL designs. The rest of the process is usually outsourced (<a href="https://www.wired.com/2008/10/real-men-have-f/">unless they have their own fabs</a>). Designing the RTL and ensuring that the RTL designs are correct is a complex undertaking. Yet, the process is as agile as software development once the initial costs of setting up the infrastructure are covered. Changes are relatively easy and cheap. Relative to what comes next.</p>
+					
+				<p>The RTL designs are converted to floor plans (GDSII) that specify the physical layout of the chip and are sent to manufactures in a process known as tape out. Manufactures use these floor plans to make masks that etch the logic gates onto the silicon wafer. Tape out costs for modern single-digit nanometer chips are of the order ~$100M.</p>
+
+				<h3>Configuration bits and Chicken bits</h3>
+
+				<p>Included in the RTL design are configuration bits that can be set to 0/1 to enable/disable certain features. These bits are used for testing and debugging purposes. For example, a configuration bit might disable a certain cache level to test the performance of the chip without it. Some of these bits are exposed to the user in model-specific registers or MSRs. But many bits are kept hidden.</p>
+
+				<p>While new features are added to the RTL designs with the promise of improved performance gains, the actual physical chips might not realize the gains. It is not very clear to me how such discrepancies arise. But at that point, it is too late to change designs. The RTL has been converted to a floor plan and masks have been manufactured. It is too expensive to redo the process.</p>
+
+				<p>Therefore, hardware designers lock the values of configuration bits to 0 to disable nonperforming features. In doing so, they <i>chicken</i> out of certain features. Hence, chicken bits.</p>
+            </div>
+        </div>
+    </body>
+</html>
