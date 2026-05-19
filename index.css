@@ -151,6 +151,10 @@ a:hover {
     border-bottom: #d3d6ff 1px solid;
 }
 
+.blog p{
+    line-height: 1.75rem;
+}
+
 .blog-list {
     display: grid;
     gap: 1rem;
