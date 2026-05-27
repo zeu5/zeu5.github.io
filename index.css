@@ -4,6 +4,7 @@
     --muted: #d3d6ff;
     --line: rgba(255, 255, 255, 0.55);
     --card: rgba(255, 255, 255, 0.07);
+    --code-bg: #0d1117;
 }
 
 body {
@@ -153,6 +154,20 @@ a:hover {
 
 .blog p{
     line-height: 1.75rem;
+}
+
+.blog pre {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow-x: auto;
+    padding: 1rem;
+}
+
+.blog pre code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 .blog-list {
