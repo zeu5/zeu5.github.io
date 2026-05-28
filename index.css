@@ -156,6 +156,10 @@ a:hover {
     line-height: 1.75rem;
 }
 
+.blog ol {
+    line-height: 1.75rem;
+}
+
 .blog pre {
     background: var(--code-bg);
     border: 1px solid var(--line);
