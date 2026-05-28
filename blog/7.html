@@ -22,7 +22,7 @@
 					<p class="blog-date">2026-05-27</p>
 				</article>
 
-                <p>Distributed protocols define how nodes should behave in a network to solve a collective problem. Sometimes, they don't need to communicate with each other. But most times, they need to send and receive messages. In my PhD, I focused on a specific class of distributed protocol called consensus protocols where nodes have to commonly agree on a value. These protocols are complex, and therefore implementing them correctly is challenging and bug prone. I developed new techniques to test the implementation and find bugs.</p>
+                <p>Distributed protocols define how nodes should behave in a network to solve a collective problem. Sometimes, they don't need to communicate with each other. But most times, they need to send and receive messages. In my PhD, I focused on a specific class of distributed protocols called consensus protocols where nodes have to commonly agree on a value. These protocols are complex, and therefore implementing them correctly is challenging and bug prone. I developed new techniques to test the implementation and find bugs.</p>
 
                 <p>But prior to my work, my advisors had <a href="https://dl.acm.org/doi/10.1145/3428278">worked on an approach</a> that depended on a particular property of these distributed protocols called <a href="https://dl.acm.org/doi/10.1007/s00446-009-0084-6">Communication Closure</a>. Why? it makes testing distributed protocols easier. I try to prove the property for two very popular consensus protocols, Paxos and Raft in Lean (with the help of AI).</p> 
                     
@@ -36,9 +36,9 @@
                 
 				<p>I used both Claude and Codex to prove the communication closure of Paxos and Raft. All the proofs in lean are available here - <a href="https://github.com/zeu5/communication-closure">zeu5/communication-closure</a>.</p>
 
-				<p>First, I asked it model Paxos and Raft in lean. For Paxos I added the original <a href="https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf">paper</a> by Lamport as reference. For Raft, I added a <a href="https://github.com/dranov/raft-tla/blob/master/tlc_membership/raft.tla">TLA+ model</a> with membership changes included. It was no suprise to me that the model was generated accurately in one shot. (It might've been surprising before <a href="https://simonwillison.net/tags/november-2025-inflection/">November 2025</a>.)</p>
+				<p>First, I asked it define the Paxos and Raft protocols in Lean. For Paxos I added the original <a href="https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf">paper</a> by Lamport as reference. For Raft, I added a <a href="https://github.com/dranov/raft-tla/blob/master/tlc_membership/raft.tla">TLA+ model</a> with membership changes included. It was no suprise to me that the protocols were correctly defined in one shot. (It might've been surprising before <a href="https://simonwillison.net/tags/november-2025-inflection/">November 2025</a>.)</p>
 
-				<p>Then, I provided an informal definition of Communication Closure and asked it prove the property for both Raft and Paxos. Here is what it came up with for Paxos.</p>
+				<p>Then, I provided an informal definition of Communication Closure and asked it prove the property for both Raft and Paxos. For Paxos, it came up with the following property,</p>
 
 				<pre>
 				<code>
@@ -54,9 +54,9 @@ def CommunicationClosedStep (s s' : State p) : Prop :=
 				</code>
 				</pre>
 
-				<p>It proved a rather trivial property, that only the primary (or leader) in Paxos can change rounds. For the rest, the action associated with the step matches the round in the state. Paxos is naturally communication closed. Providing the formal definition from the paper ensured that Claude/Codex was able to encode the right property and also prove it for Paxos.</p>
+				<p>Which is rather trivial. It states that between two states in a Paxos trace, only the primary (or leader node) in Paxos can change rounds. For the remaining nodes, the action associated with the step matches the round in the state. Paxos is naturally communication closed. After I provided the formal definition from the paper, Claude/Codex was able to encode the right property and also prove it for Paxos.</p>
 
-				<p>However, Raft is not communication closed in the traditional sense of the definition. Receiving a higher term message will affect the state of a process. Further, the state retains older terms in its log that affect future decisions. I had to try several different modellings to prove Communication Closure of Raft. But eventually, I settled on the following trick - to treat the decision index of the log as the round instead of the term number contained in the message. Claude introduced all the necessary mechanics and lemmas to prove a variant of Communication Closure for Raft:</p>
+				<p>However, Raft is not communication closed in the traditional sense of the definition. When a node receives a message from a higher term, it affects the state of the node. Further, the state of each node contains information from older terms in its log and affect future decisions. To prove Communication Closure of Raft, I had to try several different ways to model. But eventually, I settled on the following trick - to treat the decision index of the log as the round instead of the term number contained in the message. Claude introduced all the necessary mechanics and lemmas to prove a variant of Communication Closure for Raft:</p>
 
 				<pre>
 				<code>
@@ -71,7 +71,7 @@ theorem exists_commit_grouped_trace (t : RaftTrace p) :
 
 				<p>That brings me to the following open question. To show communication closure of any consensus protocol, is it sufficient to show that there is an attribute in the state of each process that progresses monotonically? Is that attribute always the commit index of the log?</p>
 
-				<p>Either way, AI was very helpful since I am no expert in Lean, this was an experience in learning how to read and prove trivial properties in Lean but also get to very complex stuff without spending all the time to skill up.</p>
+				<p>To conclude, AI was very helpful since I did not know Lean. This was an experience in learning how to read and prove trivial properties in Lean but also get to very complex stuff without spending all the time to skill up.</p>
 
                 <p class="blog-tags">#tech</p>
             </div>
