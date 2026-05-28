@@ -215,6 +215,50 @@ a:hover {
     font-style: italic;
 }
 
+.typology-map-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: end;
+    margin: 2rem 0 0.85rem;
+}
+
+.typology-map-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.typology-map-subtitle {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.typology-map-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+    text-align: right;
+    max-width: 18rem;
+}
+
+.typology-map {
+    height: 28rem;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: #111827;
+}
+
+.typology-map-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    color: var(--muted);
+    text-align: center;
+}
+
 @media screen and (max-width: 35.5em) {
     #container {
         margin-left: 1rem;
@@ -229,5 +273,19 @@ a:hover {
 
     #about {
         font-size: 1rem;
+    }
+
+    .typology-map-header {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .typology-map-note {
+        text-align: left;
+        max-width: none;
+    }
+
+    .typology-map {
+        height: 20rem;
     }
 }

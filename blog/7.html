@@ -28,9 +28,9 @@
                     
                 <p>To define communication closure, let's start with a simple model of distributed protocols. Protocols are state machines that define how each node should behave. The edges are labelled with messages received or sent. Most protocols tag messages with round numbers or counters. Rounds in Paxos and Terms in Raft. The trace of a distributed system is a sequence of states and messages. The trace can be projected onto a node, as a sequence of local states with messages sent and received by that node.</p>
 				
-				<p>Communication closure (as defined in the testing paper) is stated as follows. For any trace where messages of different rounds intermingle (I'll explain in a bit), there is an equivalent trace where messages of the same round are grouped together. The figure below illustrates it more abstractly (borrowed from the paper with style adaptations).</p>
+				<p>Communication closure (as defined in the testing paper) is stated as follows: For any trace where messages of different rounds intermingle (I'll explain in a bit), there is an equivalent trace where messages of the same round are grouped together. The figure below illustrates it more abstractly (borrowed from the paper with style adaptations).</p>
 
-				<img src="/images/communication_closure.png">
+				<img src="/assets/blog_7.png">
 
 				<p>In both the images, the states of each process is exactly the same, but there are clear round boundaries that messages do not cross. For this property to hold in a distributed protocol, it should essentially discard messages from rounds that are not current (locally).</p>
                 
@@ -69,7 +69,7 @@ theorem exists_commit_grouped_trace (t : RaftTrace p) :
 
 				<p>For every Raft trace, there exists an equivalent trace with commit-index closure. The proof is trivial as the supporting lemmas show that commit index closure is true for every trace of Raft.</p>
 
-				<p>That brings me to the following open question. To show communication closure of any consensus protocol, is it sufficient to show that there is an attribute in the state of each process that progresses monotonically? Is that attribute always the commit index of the log?</p>
+				<p>That brings me to the following open question: To show communication closure of any consensus protocol, is it sufficient to show that there is an attribute in the state of each process that progresses monotonically? Is that attribute always the commit index of the log?</p>
 
 				<p>To conclude, AI was very helpful since I did not know Lean. This was an experience in learning how to read and prove trivial properties in Lean but also get to very complex stuff without spending all the time to skill up.</p>
 

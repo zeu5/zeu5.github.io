@@ -4,6 +4,7 @@
 		<title>DataJam - May 2026 | Srinidhi Nagendra</title>
 		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
 		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 		<link rel="stylesheet" href="../index.css">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -22,16 +23,191 @@
 					<p class="blog-date">2026-05-28</p>
 				</article>
 
-                <p>I recently attended a <a href="https://opencity.in/bengaluru-stormwater-drains-datajam-may-2026/">Data Jam</a>, an initiative by civic bodies in Bangalore to engage citizens in data-driven solutions for urban challenges. It was my first, below is my experience and the outcomes of the event.</p>
+                <p>I recently attended a <a href="https://opencity.in/bengaluru-stormwater-drains-datajam-may-2026/">Data Jam</a>, an initiative by civic bodies in Bengaluru to engage citizens in data-driven solutions for urban challenges. It was my first, below is my experience and the outcomes of the event.</p>
 
-				<p>We were asked to look at stormwater drains, the problems surrounding them, and provide solutions backed by data. There were many themes, but our team focused on analyzing how the stormwater drains are impacted by land use patterns. Our first hurdle was finding the data. We have data about land use only from 2017, the city has evolved significantly since then. Below are a few graphs and interactive visualizations we developed as part of the event.</p>
+				<p>We were asked to look at stormwater drains, the problems surrounding them, and provide solutions backed by data. There were many themes, but our team focused on analyzing how the stormwater drains are impacted by land use patterns. Our first hurdle was finding the data. We have data about land use only from 2017, the city has evolved significantly since then. Below are a few interactive visualizations we developed as part of the event.</p>
 
-				<p>First, a map of all storm water drains across the city along with existing lakes. Data from here - <a href="https://example.com/stormwater-drains-data">Stormwater Drains Data</a></p>
+				<p>First, a map of all storm water drains across the city along with existing lakes. Bengaluru has a well connected system of drains that feed different lakes, some of which we have lost. Data from here - <a href="https://buildingaresilientbengaluru.com/decoding-stormwater-infrastructure/#download-centre">Stormwater Drains Data</a></p>
 
-				<p>Now we add the old lakes</p>
+				<header class="typology-map-header" aria-labelledby="typology-map-title">
+					<div>
+						<h2 id="typology-map-title">Lakes and storm water drains across the city.</h2>
+					</div>
+				</header>
+				<div id="typology-map-1" class="typology-map" role="img" aria-label="Interactive map showing merged lakes and drains"></div>
 
-				<p></p>
+				<p>Next, we overlayed onto this map, the land use patterns - residential, industrial and other open areas. We wanted to identify those parts of the city where the stormwater drain or a lake is built over (or too close).</p>
+
+				<header class="typology-map-header" aria-labelledby="intersections-map-title">
+					<div>
+						<h2 id="intersections-map-title">Property intersections</h2>
+						<p class="typology-map-subtitle">Intersections between storm water drains and properties.</p>
+					</div>
+				</header>
+				<div id="intersections-map" class="typology-map" role="img" aria-label="Map showing lake–property intersections"></div>
+
+				<p>The map depicts a well known problem in Bengaluru. Properties routinely encroach on Lakes or storm water drains without accounting for adequate buffer zones.</p>
+
+				<p>We also looked at a few other interesting questions. </p>
+
+				<ol>
+					<li>Are the storm water drains maintained well on ward boundaries? No strong correlation to suggest they are not maintained.</li>
+					<li>Is dumping waste into storm water drains common in ward boundaries? Again, no strong correlation to suggest the hypothesis.</li>
+					<li>Is the water quality in the storm water drains bad when sewage lines are closer? Small positive correlation to suggest that water quality is bad if sewage lines less than 150mm in diameter are close by.</li>
+				</ol>
+
+				<p>To answer the above questions, we used recent survey <a href="https://buildingaresilientbengaluru.com/audit-dashboard/">data</a> collected by volunteers who visited parts of the drains and recorded their observations.</p>
+
+				<p>Overall, the event was very well organized. The problem statements were structured, time allotted was sufficient, and the presentations were thoroughly critiqued by the judges.</p>
+
+				<p>But, I felt that there was a lack of technical depth in the analysis and discussions presented by participants (including our team), more hypothesising based on anecdotal evidence and less empirical evidence. As a result, the judges seemed more skeptical of the results presented. I am less hopeful that beyond a new editorial, any real policy change will come out of this exercise.</p>
+
+                <p class="blog-tags">#general</p>
             </div>
         </div>
+		<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+		<script>
+			(async () => {
+				const mapElement = document.getElementById('typology-map-1');
+				const statusStyles = {
+					'Work in progress': { fill: '#4dd0c8', stroke: '#a6fff8' },
+					'Developed lake': { fill: '#7bd389', stroke: '#d5ffd9' },
+					'To Be Developed': { fill: '#ffb347', stroke: '#ffe0b3' }
+				};
+
+				try {
+					const response = await fetch('../assets/lakes_primary_secondary_merged.geojson');
+					if (!response.ok) {
+						throw new Error(`Unable to load lake data (${response.status})`);
+					}
+
+					const geojson = await response.json();
+					const map = L.map(mapElement, { scrollWheelZoom: false, preferCanvas: true });
+
+					L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+						maxZoom: 19,
+						attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+					}).addTo(map);
+
+					const layer = L.geoJSON(geojson, {
+						style: (feature) => {
+							const status = feature?.properties?.status ?? 'Developed lake';
+							const style = statusStyles[status] || { fill: '#c792ea', stroke: '#f2d7ff' };
+							return {
+								color: style.stroke,
+								weight: 2.25,
+								opacity: 0.95,
+								fillColor: style.fill,
+								fillOpacity: 0.62,
+								fillRule: 'evenodd'
+							};
+						},
+						onEachFeature: (feature, featureLayer) => {
+							const featureName = feature?.properties?.name ?? 'Unnamed lake';
+							const status = feature?.properties?.status ?? 'Unknown';
+							const category = feature?.properties?.Category ?? 'unknown';
+
+							featureLayer.bindPopup(`
+								<strong>${featureName}</strong><br>
+								Status: ${status}<br>
+								Category: ${category}<br>
+								Ward: ${feature?.properties?.ward_name ?? 'unknown'}
+							`);
+
+							featureLayer.on('mouseover', () => {
+								featureLayer.setStyle({
+									weight: 4,
+									fillOpacity: 0.82,
+									color: '#ffffff'
+								});
+								if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+									featureLayer.bringToFront();
+								}
+							});
+
+							featureLayer.on('mouseout', () => {
+								layer.resetStyle(featureLayer);
+							});
+						}
+					}).addTo(map);
+
+					map.fitBounds(layer.getBounds(), { padding: [0, 0] });
+				} catch (error) {
+					mapElement.classList.add('typology-map-error');
+					mapElement.textContent = `Could not load the lake map. ${error.message}`;
+				}
+
+				// Second map: lake-property intersections
+				try {
+					const mapElement2 = document.getElementById('intersections-map');
+					if (!mapElement2) throw new Error('Intersections map element not found');
+
+					const map2 = L.map(mapElement2, { scrollWheelZoom: false, preferCanvas: true });
+
+					L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+						maxZoom: 19,
+						attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+					}).addTo(map2);
+
+					const resp2 = await fetch('../assets/lakes_properties_intersections.geojson');
+					if (!resp2.ok) throw new Error(`Unable to load intersections data (${resp2.status})`);
+					const geojson2 = await resp2.json();
+
+					const layer2 = L.geoJSON(geojson2, {
+						pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+							radius: 4,
+							fillColor: '#7bd389',
+							color: '#d5ffd9',
+							weight: 1,
+							opacity: 0.9,
+							fillOpacity: 0.9
+						}),
+						style: (feature) => ({
+							color: '#a6fff8',
+							weight: 2,
+							opacity: 0.95,
+							fillColor: '#4dd0c8',
+							fillOpacity: 0.62
+						}),
+						onEachFeature: (feature, flayer) => {
+							const props = feature?.properties || {};
+							const title = props?.name || props?.lake_name || 'Intersection';
+							flayer.bindPopup(`
+								<strong>${title}</strong><br>
+								Type: ${props?.intersection_type ?? props?.type ?? 'unknown'}<br>
+								Parcel: ${props?.parcel_id ?? props?.pid ?? 'n/a'}
+							`);
+
+							flayer.on('mouseover', () => {
+								flayer.setStyle({
+									weight: 4,
+									color: '#ffffff',
+									fillOpacity: 0.95
+								});
+								if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) flayer.bringToFront();
+							});
+
+							flayer.on('mouseout', () => {
+								layer2.resetStyle(flayer);
+							});
+						}
+					}).addTo(map2);
+
+					// Fit to features tightly like the first map
+					if (layer2.getBounds) {
+						const bounds2 = layer2.getBounds();
+						if (bounds2 && bounds2.isValid && bounds2.isValid()) {
+							map2.fitBounds(bounds2, { padding: [0, 0] });
+						}
+					}
+				} catch (err) {
+					const el2 = document.getElementById('intersections-map');
+					if (el2) {
+						el2.classList.add('typology-map-error');
+						el2.textContent = `Could not load intersections map. ${err.message}`;
+					}
+				}
+			})();
+		</script>
     </body>
 </html>
