@@ -7,6 +7,11 @@
     --code-bg: #0d1117;
 }
 
+.divider {
+    width: 100%;
+    border-bottom: 1px solid var(--line);
+}
+
 body {
     background-color: var(--bg);
     color: var(--fg);
