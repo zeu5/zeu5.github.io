@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Scenario Tests | Srinidhi Nagendra</title>
+		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+		<link rel="stylesheet" href="../index.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	</head>
+	<body>
+		<div class="pure-g" id="container">
+			<div class="pure-u-1">
+				<nav class="top-nav" aria-label="Main navigation">
+					<a href="../index.html">Notes</a>
+					<a href="../about.html">About</a>
+				</nav>
+			</div>
+
+			<div class="pure-u-1 blog">
+				<article>
+					<h1>Scenario Tests</h1>
+					<p class="blog-date">2026-07-12</p>
+				</article>
+
+                <p>Next in my list of trying to use AI to further my PhD research is Scenario Tests. A unit testing framework for distributed protocols.</p>
+
+                <p>The first work in my PhD was Netrix, a domain specific language for testing distributed protocol implementations. Essentially, I was trying to answer the question - <i>What is the equivalent of a unit test for distributed protocols?</i> The answer is Scenario tests.</p>
+
+                <p>Distributed protocols are notoriously hard to implement correctly, and even harder to find bugs in. However, it is relatively easy to present new protocols and theoretically prove their correctness. The proofs typically follow some form of scenario reasoning. <i>If this invariant is violated, then we get into a scenario which can never happen</i>. 
+                </p>
+                
+                <p>Understanding the reasoning and believing in the correctness of the proof is a first step in implementing the protocol. Therefore, it is also very natural for the developer implementing the protocol to write the tests as scenarios.</p>
+
+                <p>To write a Scenario Test, a developer writes a sequence of filter rules. They filter events to track a runtime monitor, and also guide the execution of the distributed protocol. Let's look at a simple example for Raft.</p>
+                
+                <pre>
+				<code>
+// MsgApp from a leader would mean election succeeded — failure condition.
+sm := netrix.NewStateMachine()
+sm.Builder().On(netrix.IsMessageType(pb.MsgApp), netrix.FailureState)
+
+filters := netrix.NewFilterSet()
+filters.AddFilter(netrix.If(netrix.IsMessageType(pb.MsgVote)).Then(netrix.DropMessage()))
+filters.AddFilter(netrix.If(netrix.IsMessageType(pb.MsgVoteResp)).Then(netrix.DropMessage()))
+
+...
+
+result := runNetrixTest(t, tc, envFunc)
+require.NoError(t, result.Err)
+require.False(t, result.IsFailure(), "no leader should be elected when all votes are dropped")
+				</code>
+				</pre>
+
+                <p>The test states a simple property and enforces a specific scenario in the execution of the distributed system - one where votes and their responses are never delivered and hence, no leader is ever elected. The test has two components, (1) The state machine, and (2) the filters. The state machine tracks the state of the test, derived either from messages sent or from the local state of the nodes in the distributed system. The filters decide which messages are delivered, dropped, duplicated, manipulated, or just observed. Together, they create a scenario and describe a property that needs to be satisfied.</p>
+
+                <p>Underneath, the test is driven by a stream of events. Events are created when messages are sent, received, or other internal steps are taken by the nodes (e.g. becoming a leader). The events are passed through the filters one by one, and the corresponding action is taken if any of the filters match. If none match, the default action is to deliver a message.</p>
+
+                <p>Lots of interesting questions come up with scenario tests. How does the test decide the order of messages observed (since there is no single true order in distributed systems)? In the original paper, we allow users to plug their own strategy for exploration, but the default is random order. The second question which I use the help of AI to answer is - Who writes the test? How do you know which tests are needed or sufficient?</p>
+
+                <p>For the original paper, I manually wrote all the tests and we come up with a methodology to derive tests from the protocol specification. Now with the advent of AI, I give the LLM the spec of a distributed protocol, the DSL syntax, and semantics, and instruct it to write as many tests as it can with the goal of being exhaustive. As expected, we got a lot of meaningful and interesting tests that I'd missed when I manually wrote them. But since etcd/raft is such a robust implementation, I did not find any bugs.</p>
+
+                <p>All the tests including the framework can be accessed here - <a href="https://github.com/zeu5/raft/blob/main/scenariotests/SCENARIOS.md">zeu5/raft</a></p>
+
+                <p>You can find the paper (published in NETYS 2024) and all the detailed experiments here - <a href="https://arxiv.org/abs/2303.05893">arXiv (2303.05893)</a></p>
+
+                <p class="blog-tags">#tech</p>
+            </div>
+        </div>
+    </body>
+</html>
