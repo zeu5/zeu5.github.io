@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Making Strassen-Winograd work on GPUs | Srinidhi Nagendra</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
+        integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="../index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+    <div class="pure-g" id="container">
+        <div class="pure-u-1">
+            <nav class="top-nav" aria-label="Main navigation">
+                <a href="../index.html">Notes</a>
+                <a href="../about.html">About</a>
+            </nav>
+        </div>
+
+        <div class="pure-u-1 blog">
+            <article>
+                <h1>Making Strassen-Winograd work on GPUs</h1>
+                <p class="blog-date">2026-07-17</p>
+            </article>
+
+            <p>The following post is an ode to <a href="https://blog.acolyer.org/">The Morning Paper</a>. From 2016, the
+                blog was a constant source of learning for me, making complex research papers from a wide range of top
+                computer science conferences accessible. As I stepped into the research world, I came to appreciate more
+                the immense effort put into producing detailed reviews and explanations week after week. Below I write
+                my first paper review in the hope of being as consistent and also discovering new areas of research. I
+                will be presenting <b>"Compiling Strassen-like Matrix Multiplication Algorithms to Fast CUDA
+                    Kernels"</b> published in <a href="https://dl.acm.org/doi/10.1145/3808267">PLDI 2026</a></p>
+
+            <div class="divider"></div>
+
+            <p>General Matrix Multiplication (GEMM) underpins most of the deep learning (Image recognition, Neural Nets,
+                LLM inference and training) workloads. So it is very important to extract the peak performance from
+                hardware designed specifically for these workloads. So it is all the more surprising that the best
+                performing implementation of GEMM is not the one that provides the best asymptotic complexity. The paper
+                makes a step in bridging this gap - efficiently implementing an algorithm that provides better
+                asymptotic complexity.</p>
+
+            <p></p>
+            <div class="divider"></div>
+            <p class="blog-tags">#tech</p>
+        </div>
+    </div>
+</body>
+
+</html>
