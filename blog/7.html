@@ -1,46 +1,76 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Communication closure | Srinidhi Nagendra</title>
-		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css" integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
-		<link rel="stylesheet" href="../index.css">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	</head>
-	<body>
-		<div class="pure-g" id="container">
-			<div class="pure-u-1">
-				<nav class="top-nav" aria-label="Main navigation">
-					<a href="../index.html">Notes</a>
-					<a href="../about.html">About</a>
-				</nav>
-			</div>
-			<div class="pure-u-1 blog">
-				<article>
-					<h1>Communication closure</h1>
-					<p class="blog-date">2026-05-27</p>
-				</article>
 
-                <p>Distributed protocols define how nodes should behave in a network to solve a collective problem. Sometimes, they don't need to communicate with each other. But most times, they need to send and receive messages. In my PhD, I focused on a specific class of distributed protocols called consensus protocols where nodes have to commonly agree on a value. These protocols are complex, and therefore implementing them correctly is challenging and bug prone. I developed new techniques to test the implementation and find bugs.</p>
+<head>
+	<title>Communication closure | Srinidhi Nagendra</title>
+	<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/pure-min.css"
+		integrity="sha384-Uu6IeWbM+gzNVXJcM9XV3SohHtmWE+3VGi496jvgX1jyvDTXfdK+rfZc8C1Aehk5" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://unpkg.com/purecss@2.0.6/build/grids-responsive-min.css">
+	<link rel="stylesheet" href="../index.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 
-                <p>But prior to my work, my advisors had <a href="https://dl.acm.org/doi/10.1145/3428278">worked on an approach</a> that depended on a particular property of these distributed protocols called <a href="https://dl.acm.org/doi/10.1007/s00446-009-0084-6">Communication Closure</a>. Why? it makes testing distributed protocols easier. I try to prove the property for two very popular consensus protocols, Paxos and Raft in Lean (with the help of AI).</p> 
-                    
-                <p>To define communication closure, let's start with a simple model of distributed protocols. Protocols are state machines that define how each node should behave. The edges are labelled with messages received or sent. Most protocols tag messages with round numbers or counters. Rounds in Paxos and Terms in Raft. The trace of a distributed system is a sequence of states and messages. The trace can be projected onto a node, as a sequence of local states with messages sent and received by that node.</p>
-				
-				<p>Communication closure (as defined in the testing paper) is stated as follows: For any trace where messages of different rounds intermingle (I'll explain in a bit), there is an equivalent trace where messages of the same round are grouped together. The figure below illustrates it more abstractly (borrowed from the paper with style adaptations).</p>
+<body>
+	<div class="pure-g" id="container">
+		<div class="pure-u-1">
+			<nav class="top-nav" aria-label="Main navigation">
+				<a href="../index.html">Notes</a>
+				<a href="../about.html">About</a>
+			</nav>
+		</div>
+		<div class="pure-u-1 blog">
+			<article>
+				<h1>Communication closure</h1>
+				<p class="blog-date">2026-05-27</p>
+			</article>
 
-				<img src="/assets/blog_7.png">
+			<p>Distributed protocols define how nodes should behave in a network to solve a collective problem.
+				Sometimes, they don't need to communicate with each other. But most times, they need to send and receive
+				messages. In my PhD, I focused on a specific class of distributed protocols called consensus protocols
+				where nodes have to commonly agree on a value. These protocols are complex, and therefore implementing
+				them correctly is challenging and bug prone. I developed new techniques to test the implementation and
+				find bugs.</p>
 
-				<p>In both the images, the states of each process is exactly the same, but there are clear round boundaries that messages do not cross. For this property to hold in a distributed protocol, it should essentially discard messages from rounds that are not current (locally).</p>
-                
-				<p>I used both Claude and Codex to prove the communication closure of Paxos and Raft. All the proofs in lean are available here - <a href="https://github.com/zeu5/communication-closure">zeu5/communication-closure</a>.</p>
+			<p>But prior to my work, my advisors had <a href="https://dl.acm.org/doi/10.1145/3428278">worked on an
+					approach</a> that depended on a particular property of these distributed protocols called <a
+					href="https://dl.acm.org/doi/10.1007/s00446-009-0084-6">Communication Closure</a>. Why? it makes
+				testing distributed protocols easier. I try to prove the property for two very popular consensus
+				protocols, Paxos and Raft in Lean (with the help of AI).</p>
 
-				<p>First, I asked it define the Paxos and Raft protocols in Lean. For Paxos I added the original <a href="https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf">paper</a> by Lamport as reference. For Raft, I added a <a href="https://github.com/dranov/raft-tla/blob/master/tlc_membership/raft.tla">TLA+ model</a> with membership changes included. It was no suprise to me that the protocols were correctly defined in one shot. (It might've been surprising before <a href="https://simonwillison.net/tags/november-2025-inflection/">November 2025</a>.)</p>
+			<p>To define communication closure, let's start with a simple model of distributed protocols. Protocols are
+				state machines that define how each node should behave. The edges are labelled with messages received or
+				sent. Most protocols tag messages with round numbers or counters. Rounds in Paxos and Terms in Raft. The
+				trace of a distributed system is a sequence of states and messages. The trace can be projected onto a
+				node, as a sequence of local states with messages sent and received by that node.</p>
 
-				<p>Then, I provided an informal definition of Communication Closure and asked it prove the property for both Raft and Paxos. For Paxos, it came up with the following property,</p>
+			<p>Communication closure (as defined in the testing paper) is stated as follows: For any trace where
+				messages of different rounds intermingle (I'll explain in a bit), there is an equivalent trace where
+				messages of the same round are grouped together. The figure below illustrates it more abstractly
+				(borrowed from the paper with style adaptations).</p>
 
-				<pre>
+			<img src="/assets/blog_7.png">
+
+			<p>In both the images, the states of each process is exactly the same, but there are clear round boundaries
+				that messages do not cross. For this property to hold in a distributed protocol, it should essentially
+				discard messages from rounds that are not current (locally).</p>
+
+			<p>I used both Claude and Codex to prove the communication closure of Paxos and Raft. All the proofs in lean
+				are available here - <a
+					href="https://github.com/zeu5/communication-closure">zeu5/communication-closure</a>.</p>
+
+			<p>First, I asked it define the Paxos and Raft protocols in Lean. For Paxos I added the original <a
+					href="https://lamport.azurewebsites.net/pubs/lamport-paxos.pdf">paper</a> by Lamport as reference.
+				For Raft, I added a <a
+					href="https://github.com/dranov/raft-tla/blob/master/tlc_membership/raft.tla">TLA+ model</a> with
+				membership changes included. It was no suprise to me that the protocols were correctly defined in one
+				shot. (It might've been surprising before <a
+					href="https://simonwillison.net/tags/november-2025-inflection/">November 2025</a>.)</p>
+
+			<p>Then, I provided an informal definition of Communication Closure and asked it prove the property for both
+				Raft and Paxos. For Paxos, it came up with the following property,</p>
+
+			<pre>
 				<code>
 /--
 A single Paxos transition satisfies the communication-closure discipline for
@@ -54,11 +84,20 @@ def CommunicationClosedStep (s s' : State p) : Prop :=
 				</code>
 				</pre>
 
-				<p>Which is rather trivial. It states that between two states in a Paxos trace, only the primary (or leader node) in Paxos can change rounds. For the remaining nodes, the action associated with the step matches the round in the state. Paxos is naturally communication closed. After I provided the formal definition from the paper, Claude/Codex was able to encode the right property and also prove it for Paxos.</p>
+			<p>Which is rather trivial. It states that between two states in a Paxos trace, only the primary (or leader
+				node) in Paxos can change rounds. For the remaining nodes, the action associated with the step matches
+				the round in the state. Paxos is naturally communication closed. After I provided the formal definition
+				from the paper, Claude/Codex was able to encode the right property and also prove it for Paxos.</p>
 
-				<p>However, Raft is not communication closed in the traditional sense of the definition. When a node receives a message from a higher term, it affects the state of the node. Further, the state of each node contains information from older terms in its log and affect future decisions. To prove Communication Closure of Raft, I had to try several different ways to model. But eventually, I settled on the following trick - to treat the decision index of the log as the round instead of the term number contained in the message. Claude introduced all the necessary mechanics and lemmas to prove a variant of Communication Closure for Raft:</p>
+			<p>However, Raft is not communication closed in the traditional sense of the definition. When a node
+				receives a message from a higher term, it affects the state of the node. Further, the state of each node
+				contains information from older terms in its log and affect future decisions. To prove Communication
+				Closure of Raft, I had to try several different ways to model. But eventually, I settled on the
+				following trick - to treat the decision index of the log as the round instead of the term number
+				contained in the message. Claude introduced all the necessary mechanics and lemmas to prove a variant of
+				Communication Closure for Raft:</p>
 
-				<pre>
+			<pre>
 				<code>
 /-- For any trace, there exists an equivalent trace with commit-index closure. -/
 theorem exists_commit_grouped_trace (t : RaftTrace p) :
@@ -67,14 +106,21 @@ theorem exists_commit_grouped_trace (t : RaftTrace p) :
 				</code>
 				</pre>
 
-				<p>For every Raft trace, there exists an equivalent trace with commit-index closure. The proof is trivial as the supporting lemmas show that commit index closure is true for every trace of Raft.</p>
+			<p>For every Raft trace, there exists an equivalent trace with commit-index closure. The proof is trivial as
+				the supporting lemmas show that commit index closure is true for every trace of Raft.</p>
 
-				<p>That brings me to the following open question: To show communication closure of any consensus protocol, is it sufficient to show that there is an attribute in the state of each process that progresses monotonically? Is that attribute always the commit index of the log?</p>
+			<p>That brings me to the following open question: To show communication closure of any consensus protocol,
+				is it sufficient to show that there is an attribute in the state of each process that progresses
+				monotonically? Is that attribute always the commit index of the log?</p>
 
-				<p>To conclude, AI was very helpful since I did not know Lean. This was an experience in learning how to read and prove trivial properties in Lean but also get to very complex stuff without spending all the time to skill up.</p>
+			<p>To conclude, AI was very helpful since I did not know Lean. This was an experience in learning how to
+				read and prove trivial properties in Lean but also get to very complex stuff without spending all the
+				time to skill up.</p>
 
-                <p class="blog-tags">#tech</p>
-            </div>
-        </div>
-    </body>
+			<div class="divider"></div>
+			<p class="blog-tags">#tech</p>
+		</div>
+	</div>
+</body>
+
 </html>

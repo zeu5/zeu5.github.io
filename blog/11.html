@@ -81,13 +81,13 @@ require.False(t, result.IsFailure(), "no leader should be elected when all votes
 
 			<p>Lots of interesting questions come up with scenario tests. How does the test decide the order of messages
 				observed (since there is no single true order in distributed systems)? In the original paper, we allow
-				users to plug their own strategy for exploration, but the default is random order. The second question
-				which I use the help of AI to answer is - Who writes the test? How do you know which tests are needed or
-				sufficient?</p>
+				users to plug in their own strategy for exploration, but the default is random order. The second
+				question which I use the help of AI to answer is - Who writes the test? How do you know which tests are
+				needed or sufficient?</p>
 
 			<p>For the original paper, I manually wrote all the tests and we come up with a methodology to derive tests
 				from the protocol specification. Now with the advent of AI, I give the LLM the spec of a distributed
-				protocol, the DSL syntax, and semantics, and instruct it to write as many tests as it can with the goal
+				protocol, the DSL syntax and semantics, and instruct it to write as many tests as it can with the goal
 				of being exhaustive. As expected, we got a lot of meaningful and interesting tests that I'd missed when
 				I manually wrote them. But since etcd/raft is such a robust implementation, I did not find any bugs.</p>
 
@@ -97,6 +97,7 @@ require.False(t, result.IsFailure(), "no leader should be elected when all votes
 			<p>You can find the paper (published in NETYS 2024) and all the detailed experiments here - <a
 					href="https://arxiv.org/abs/2303.05893">arXiv (2303.05893)</a></p>
 
+			<div class="divider"></div>
 			<p class="blog-tags">#tech</p>
 		</div>
 	</div>
