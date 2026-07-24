@@ -43,7 +43,17 @@
                 makes a step in bridging this gap - efficiently implementing an algorithm that provides better
                 asymptotic complexity.</p>
 
-            <p></p>
+            <p>Strassen's Algorithm Reloaded (<a href="https://jianyuhuang.com/papers/sc16.pdf">SC '16</a>) demonstrated the effectiveness of Strassen's algorithm (and variants) on CPUs. Motivated by this work, the paper under review extends the idea to GPUs. The key novelty comes from encoding the intermediate sub matrix multiplications in an IR, drawing out dependencies between the data of the sub matrix multiplications as a DAG, then picking a schedule that performs best. Let's unpack what each of that means. But first, why is it hard to implement an asymptotically faster algorithm?
+            </p>
+
+            <p>Take the standard GEMM computation below. The standard cubic implementations allow for very sequential and predictable data streaming from memory to the core. As a result, the core (CPU or GPU) performing the computation is working (almost) all the time when memory is fetched in the background. Modern processors include prefetchers that fetch the data from memory to the core before it is needed based on prior access patterns. And as expected, they have evolved specifically to speed up such streamed accesses for very fast matrix multiplication.
+            </p>
+
+            <p>However, with Strassen's algorithm, despite reducing the number of matrix multiplications required, it is non trivial to ensure a predictable streamed access such that the implementation is very fast. A naive implementation will simply not do.</p>
+
+            <p>The subcomputation involves 3 different operations, Input Sums, Sub MatMuls, Output Sums. The data access patterns for these operations are (1) not as predictable, and (2) requires repeated round-trips between the memory and the core. For both these reasons, it becomes difficult to implement the algorithm efficiently.</p>
+
+            <p>The paper proposes to fix it by ensuring that the data that is moved between the core and memory is reduced or appears to be streamed by keeping it in the registers (or fusing) and performing all necessary computation.</p>
             <div class="divider"></div>
             <p class="blog-tags">#tech</p>
         </div>
