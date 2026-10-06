@@ -129,7 +129,7 @@
 				const geojson = await response.json();
 				const map = L.map(mapElement, { scrollWheelZoom: false, preferCanvas: true });
 
-				L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+				L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4c5t_1_d7a6087acf5b0cedb8ec0cf2', {
 					maxZoom: 19,
 					attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 				}).addTo(map);
@@ -189,7 +189,7 @@
 
 				const map2 = L.map(mapElement2, { scrollWheelZoom: false, preferCanvas: true });
 
-				L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+				L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=cb1_4c5t_1_d7a6087acf5b0cedb8ec0cf2', {
 					maxZoom: 19,
 					attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 				}).addTo(map2);
